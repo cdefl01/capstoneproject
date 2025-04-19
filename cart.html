@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Your Cart - BreadBay</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header><h1>Your Shopping Cart</h1></header>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="browse.html">Browse Listings</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+
+  <div class="cart-container" id="cart-items"></div>
+
+  <div id="total-section" style="text-align: center; margin-top: 20px;"></div>
+
+  <div style="text-align: center; margin-top: 20px;">
+    <button id="checkoutBtn">Proceed to Checkout</button>
+  </div>
+
+  <script>
+    const cartContainer = document.getElementById("cart-items");
+    const totalSection = document.getElementById("total-section");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function renderCart() {
+      cartContainer.innerHTML = "";
+      totalSection.innerHTML = "";
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+        checkoutBtn.style.display = "none";
+        return;
+      }
+
+      let total = 0;
+
+      // Grouping items by name to manage quantities
+      let groupedItems = {};
+      cart.forEach(item => {
+        if (!groupedItems[item.name]) {
+          groupedItems[item.name] = { ...item, quantity: 1 };
+        } else {
+          groupedItems[item.name].quantity++;
+        }
+      });
+
+      // Render grouped items with quantity
+      Object.values(groupedItems).forEach((item, index) => {
+        total += item.price * item.quantity;
+        const div = document.createElement("div");
+        div.className = "listing";
+        div.style.width = "200px";
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <h2>${item.name}</h2>
+          <p>$${item.price.toFixed(2)} x ${item.quantity} = $${(item.price * item.quantity).toFixed(2)}</p>
+          <button onclick="removeItem('${item.name}')">Remove</button>
+        `;
+        cartContainer.appendChild(div);
+      });
+
+      totalSection.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`;
+      checkoutBtn.style.display = "inline-block";
+    }
+
+    function removeItem(itemName) {
+      // Remove the specific item from cart (and its quantity)
+      cart = cart.filter(item => item.name !== itemName);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    checkoutBtn.onclick = () => {
+      sessionStorage.setItem("lastOrder", JSON.stringify(cart));
+      localStorage.removeItem("cart");
+      window.location.href = "confirmation.html";
+    };
+
+    renderCart();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Pretzel - BreadBay</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header><h1>Pretzel</h1></header>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="browse.html">Browse Listings</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+
+  <div class="container">
+    <div class="listing">
+      <img src="pretzel.jpg" alt="Pretzel">
+      <h2>Pretzel</h2>
+      <p>$2.00</p>
+      <p>A golden, chewy snack topped with coarse salt.</p>
+      <button onclick="addToCart('Pretzel', 2.00)">Add to Cart</button>      
+    </div>
+  </div>
+
+  <script>
+    function addToCart(item, price) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ name: item, price: price, image: "pretzel.jpg" });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(item + " added to cart!");
+      window.location.href = 'browse.html';
+    }
+  </script>
+
+</body>
+</html>

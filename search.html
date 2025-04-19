@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Search Results - BreadBay</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const queryParams = new URLSearchParams(window.location.search);
+            const query = queryParams.get("query");
+            if (!query) return;
+
+            const lowerQuery = query.toLowerCase();
+
+            const products = [
+                { name: "Sourdough", price: 5.00, image: "sourdough.jpg", link: "sourdough.html" },
+                { name: "Baguette", price: 3.50, image: "baguette.jpg", link: "baguette.html" },
+                { name: "Croissant", price: 2.50, image: "croissant.jpg", link: "croissant.html" },
+                { name: "Focaccia", price: 4.00, image: "focaccia.jpg", link: "focaccia.html" },
+                { name: "Pretzel", price: 2.00, image: "pretzel.jpg", link: "pretzel.html" },
+                { name: "Ciabatta", price: 3.75, image: "ciabatta.jpg", link: "ciabatta.html" }
+            ];
+
+            const resultContainer = document.getElementById("search-results");
+
+            const matchingProducts = products.filter(product =>
+                product.name.toLowerCase().includes(lowerQuery)
+            );
+
+            if (matchingProducts.length > 0) {
+                matchingProducts.forEach(product => {
+                    const productDiv = document.createElement("div");
+                    productDiv.className = "listing";
+                    productDiv.innerHTML = `
+                        <a href="${product.link}">
+                            <img src="${product.image}" alt="${product.name}">
+                            <h2>${product.name}</h2>
+                            <p>$${product.price.toFixed(2)}</p>
+                        </a>
+                    `;
+                    resultContainer.appendChild(productDiv);
+                });
+                
+            } else {
+                resultContainer.innerHTML = `<p>No results found for "<strong>${query}</strong>".</p>`;
+            }
+        });
+
+    </script>
+</head>
+
+<body>
+
+    <header><h1>Search Results</h1></header>
+
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="browse.html">Browse Listings</a>
+        <a href="cart.html">Cart</a>
+    </nav>
+
+    <div class="container" id="search-results"></div>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Baguette - BreadBay</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header><h1>Baguette</h1></header>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="browse.html">Browse Listings</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+
+  <div class="container">
+    <div class="listing">
+      <img src="baguette.jpg" alt="Baguette">
+      <h2>Baguette</h2>
+      <p>$3.50</p>
+      <p>Crispy on the outside, soft on the inside. A French classic.</p>
+      <button onclick="addToCart('Baguette', 3.50)">Add to Cart</button>      
+    </div>
+  </div>
+
+  <script>
+    function addToCart(item, price) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ name: item, price: price, image: "baguette.jpg" });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(item + " added to cart!");
+      window.location.href = 'browse.html';
+    }
+  </script>
+
+</body>
+</html>

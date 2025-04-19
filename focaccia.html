@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Focaccia - BreadBay</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header><h1>Focaccia</h1></header>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="browse.html">Browse Listings</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+
+  <div class="container">
+    <div class="listing">
+      <img src="focaccia.jpg" alt="Focaccia">
+      <h2>Focaccia</h2>
+      <p>$4.00</p>
+      <p>Olive oil and herb-infused flatbread with a tender crumb.</p>
+      <button onclick="addToCart('Focaccia', 4.00)">Add to Cart</button>      
+    </div>
+  </div>
+
+  <script>
+    function addToCart(item, price) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ name: item, price: price, image: "focaccia.jpg" });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(item + " added to cart!");
+      window.location.href = 'browse.html';
+    }
+  </script>
+
+</body>
+</html>

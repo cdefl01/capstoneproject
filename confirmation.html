@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Order Confirmation - BreadBay</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header><h1>Order Confirmation</h1></header>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="browse.html">Browse Listings</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+
+  <div class="container" style="flex-direction: column; align-items: center; text-align: center;">
+    <h2>Thank you for your order! 🥖</h2>
+    <p>Your order has been placed successfully.</p>
+
+    <div id="receipt" style="margin-top: 2em; background: #fff8e1; padding: 1em; border: 1px solid #8b5e3c; width: 300px;">
+      <h3>Receipt</h3>
+      <p><strong>Order #:</strong> <span id="order-number"></span></p>
+      <p><strong>Date:</strong> <span id="order-date"></span></p>
+      <ul id="receipt-items" style="list-style: none; padding: 0;"></ul>
+      <p><strong>Total:</strong> $<span id="total"></span></p>
+    </div>
+  </div>
+
+  <script>
+    const receiptList = document.getElementById("receipt-items");
+    const totalDisplay = document.getElementById("total");
+    const orderNumberDisplay = document.getElementById("order-number");
+    const orderDateDisplay = document.getElementById("order-date");
+
+    function generateOrderNumber() {
+      return Math.floor(1000000000 + Math.random() * 9000000000);
+    }
+
+    function getCurrentDateTime() {
+      const now = new Date();
+      return now.toLocaleString();
+    }
+
+    const cart = JSON.parse(sessionStorage.getItem("lastOrder")) || [];
+
+    if (cart.length === 0) {
+      receiptList.innerHTML = "<li>No items found. (This is a simulation!)</li>";
+      totalDisplay.textContent = "0.00";
+
+    } else {
+      let total = 0;
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+        receiptList.appendChild(li);
+        total += item.price;
+      });
+
+      totalDisplay.textContent = total.toFixed(2);
+    }
+
+    orderNumberDisplay.textContent = generateOrderNumber();
+    orderDateDisplay.textContent = getCurrentDateTime();
+
+    sessionStorage.removeItem("lastOrder");
+    
+  </script>
+</body>
+</html>
